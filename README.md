@@ -15,3 +15,4 @@
 7. [包含min函数的最小栈](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E5%8C%85%E5%90%ABmin%E5%87%BD%E6%95%B0%E7%9A%84%E6%9C%80%E5%B0%8F%E6%A0%88.py)
 
 8. [栈的弹入弹出顺序](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E6%A0%88%E7%9A%84%E5%BC%B9%E5%85%A5%E5%BC%B9%E5%87%BA%E9%A1%BA%E5%BA%8F.py)
+
