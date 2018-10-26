@@ -19,3 +19,5 @@
 9. [二叉树的路径和](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%B7%AF%E5%BE%84%E5%92%8C.py)
 
 10. [二叉树的后序遍历](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86.py)
+
+$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$
