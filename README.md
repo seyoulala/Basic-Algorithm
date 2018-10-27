@@ -18,14 +18,14 @@
 
 9. [二叉树的路径和](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%B7%AF%E5%BE%84%E5%92%8C.py)
 
-10. [二叉树的后序遍历](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86.py)
+10.[二叉树的后序遍历](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86.py)
 
 11.[二进制中1的个数](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%AD1%E7%9A%84%E4%B8%AA%E6%95%B0.py)
 
-12. [从头到尾打印链表](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BB%8E%E5%A4%B4%E5%88%B0%E5%B0%BE%E6%89%93%E5%8D%B0%E9%93%BE%E8%A1%A8.py)
+12.[从头到尾打印链表](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BB%8E%E5%A4%B4%E5%88%B0%E5%B0%BE%E6%89%93%E5%8D%B0%E9%93%BE%E8%A1%A8.py)
 
 13.[使奇数在偶数前](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E4%BD%BF%E5%A5%87%E6%95%B0%E5%9C%A8%E5%81%B6%E6%95%B0%E4%B9%8B%E5%89%8D.py)
 
 14.[包含min函数的最小栈](https://github.com/seyoulala/Basic-Algorithm/blob/master/%E5%89%91%E6%8C%87offer/%E5%8C%85%E5%90%ABmin%E5%87%BD%E6%95%B0%E7%9A%84%E6%9C%80%E5%B0%8F%E6%A0%88.py)
 
-15[]()
+
