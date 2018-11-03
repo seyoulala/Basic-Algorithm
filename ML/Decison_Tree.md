@@ -60,7 +60,7 @@ $$
 R_1(j,s) =\lbrace x|x^{j} \leq s \rbrace,  R_2(j,s) =\lbrace x|x^{j} \gt s \rbrace
 $$
 
-
+公式：
 $$
 \hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)}y_i , x \in R_m,m=1,2
 $$
