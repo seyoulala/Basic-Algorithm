@@ -60,10 +60,6 @@ $$
 R_1(j,s) =\lbrace x|x^{j} \leq s \rbrace,  R_2(j,s) =\lbrace x|x^{j} \gt s \rbrace
 $$
 
-公式：
-$$
-\hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)y_i} , x \in R_m,m=1,2
-$$
 
 (3) 继续对两个子区域调用步骤（1），（2）直达满足停止条件
 (4) 将输入空间划分为M个区域$R_1, R_2,....R_m$,生成决策树：
