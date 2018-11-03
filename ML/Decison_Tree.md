@@ -59,10 +59,10 @@ $$
 $$
 R_1(j,s) =\lbrace x|x^{j} \leq s \rbrace,  R_2(j,s) =\lbrace x|x^{j} \gt s \rbrace
 $$
-
+公式如下：
 
 $$
-\hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)}y_i , x \in R_m,m=1,2
+\hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)}y_i  ,x \in R_m,m=1,2
 $$
 
 (3) 继续对两个子区域调用步骤（1），（2）直达满足停止条件
@@ -72,5 +72,46 @@ $$
 f(x) = \sum_{m=1}^M{\hat{c}_mI(x \in R_m)}
 $$
 
+####  分类树
+分类树用基尼指数选择最优特征，同时决定改特征的最优二值切分点。
 
+**7.基尼指数定义**
+分类问题中，假设有K个类，样本点属于第K个类的概率为$p_k$,则概率分布的基尼指数定义为
+$$
+Gini(p) = \sum_{k=1}^K{p_k(1-p_k)} = 1-\sum_{k=1}^K{p_k^2}
+$$
 
+如果样本集D根据特征A是否取某一可能值a被分割成$D_1$ 和 $D_2$两部分，即
+$$
+D_1 = \lbrace (x,y) \in D| A(x)=a\rbrace,D_2 = D-D_1
+$$
+则在特征A的条件下，集合D的基尼指数定义为
+$$
+Gini(D,A) = \frac{|D_1|}{|D|}Gini(D_1) +\frac{|D_2|}{|D|}Gini(D_2)
+$$
+基尼指数同信息熵一样，越大表示集合D越不确定。
+
+**8.特征选择的总结**
+特征选择的目的是选择对分类任务或回归任务有帮助的特征。特征选择的关键是其准则，常用的准则如下：
+（1）样本集合$D$对特征$A$ 的信息增益（$ID3$）
+$$
+\begin{align}
+g(D,A) =H(D) - H(D|A) \\
+H(D) = -\sum_{k=1}^K\frac{C_k}{D}log_2{\frac{C_k}{D}} \\
+H(D|A) = \sum_{i=1}^n\frac{D_i}{D}H(D_i)\\
+\end{align}
+$$
+
+(2)样本集$D$的信息增益比（C4.5）
+$$
+g_R(D,A) = \frac{g(D,A)}{H(D)}
+$$
+
+(3)样本集合$D$的基尼指数（CART）
+$$
+Gini(D) = 1- \sum_{k=1}^K{p_k^2}
+$$
+特征A条件下集合D的基尼指数
+$$
+Gini(D,A) = \frac{|D_1|}{|D|}Gini(D_1) +\frac{|D_2|}{|D|}Gini(D_2)
+$$
