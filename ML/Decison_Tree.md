@@ -62,7 +62,7 @@ $$
 
 公式：
 $$
-\hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)}y_i , x \in R_m,m=1,2
+\hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)y_i} , x \in R_m,m=1,2
 $$
 
 (3) 继续对两个子区域调用步骤（1），（2）直达满足停止条件
