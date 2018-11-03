@@ -55,9 +55,11 @@ $$
  遍历变量$j$，对固定的切分变量$j$扫描切分点$s$，选择使（1）达到最小的对（j,s）
  
  （2）用选定的对（j,s）划分区域并决定相应的输出值：
+ 
 $$
 R_1(j,s) =\lbrace x|x^{j} \leq s \rbrace,  R_2(j,s) =\lbrace x|x^{j} \gt s \rbrace
 $$
+
 
 $$
 \hat{c}_m = \frac{1}{N_m}\sum_{xi\in R_m(j,s)}y_i , x \in R_m,m=1,2
