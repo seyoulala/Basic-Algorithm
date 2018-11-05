@@ -17,7 +17,9 @@ boosting是怎么出现的？因为在实际中发现弱分类器比发现强分
 **伪代码如下**
       
   输入:训练数据集$T= \lbrace{(x_1,y_1),(x_2,y_2),....,(x_n,y_n) \rbrace}，y_i \in {-1,+1}$; 弱学习算法；
+  
   输出：最终分类器$G(x)$
+  
   (1)初始化训练数据的权值分布
 $$
 D_1 = (w_{11},...w_{1i},..w_{iN}),w_{1i} = \frac{1}{N},i=1,2,...N
@@ -56,3 +58,48 @@ $$
 G(x) = sign(f(x)) = sign \left (\sum_{i=1}^m{\alpha_m}{G_m(x)} \right)
 $$
 线性组合$f(x)$实现了M个基本分类器的加权表决，系数$\alpha_m$表示基本分类器 $G_m(x)$的在表决时候的话语权。所以随着迭代，后面的弱分类器的权重越来越大的
+
+
+## 2. 前向分布算法
+Adaboost可以认为是加法模型的一种特例。认为Adaboost算法是模型为加法模型，损失函数为指数损失，学习算法为前向分布算法。
+
+加法模型如下：
+$$
+f(x) = \sum_{m =1}^M{\beta_m}{b(x,\gamma_m)}
+$$
+在给定训练数据及损失函数$L(y,f(x))$的条件下，极小化如下损失:
+$$
+\min_{\beta_m,\gamma_m}\sum_{i=1}^N L \left(y_i,\sum_{m=1}^M{\beta_mb(x_i;\gamma_m)} \right)           （1）
+$$
+由公式可知，再计算LOSS时我们需要同时求解 m=1到M的所有基函数参数，前向分布算法通过每次只学习一个基函数及其系数来使loss逐步逼近（1）式。
+
+**具体地**，每步只需优化如下损失函数:
+$$
+\min_{\beta,\gamma}{\sum_{i=1}^N{L(y_i,\beta b(x_i;\gamma))}}
+$$
+
+**伪代码如下**
+      
+  输入:训练数据集$T= \lbrace{(x_1,y_1),(x_2,y_2),....,(x_n,y_n) \rbrace}$; 损失函数$L(y,f(x))$；基函数集合$\lbrace{b(x;\gamma) \lbrace}$
+  
+  输出：加法模型$f(x)$
+
+(1)初始化$f_0(x)=0$
+
+(2)$for  m =1,2,3,...M$
+
+(a)极小化损失函数
+$$
+(\beta_m,\gamma_m) = arg\min_{\beta,\gamma}{\sum_{i=1}^N{L(y_i,f_{m-1}(x_i)+\beta b(x_i;\gamma))}}
+$$
+得到参数$\beta_m,\gamma_m$
+
+(b)更新
+$$
+f_m(x) = f_{m-1}(x)+\beta_m b(x_i;\gamma_m)
+$$
+
+(3)得到加法模型
+$$
+f_m(x) = f_M(x) = \sum_{m=1}^M{\beta_m b(x_i;\gamma_m)}
+$$
