@@ -44,7 +44,9 @@ $$
 $$
 \begin{align}
 D_{m+1} = (w_{m+1,1},...w_{m+1,i},...w_{m+1,N}) \\
+
 W_{m+1,i} = \frac{w_{m,i}}{Z_m}exp(-\alpha_my_iG_m(x_i))
+
 \end{align}
 $$
 $Z_m$是一个归一化因子
