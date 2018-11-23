@@ -154,6 +154,7 @@ $$
 (2)对$m=1,2,3,...M$
 
 (a)对$i=1,2,3,,,N$,计算
+
 $$
 r_{mi} = -\left [ \frac{\alpha L(y_i,f(x_i))}{\alpha f(x_i)} \right ]_{f(x)=f_{m-1}(x)} 
 $$
