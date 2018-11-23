@@ -156,7 +156,7 @@ $$
 (a)对$i=1,2,3,,,N$,计算
 
 $$
-r_{mi} = -\left [ \frac{\alpha L(y_i,f(x_i))}{\alpha f(x_i)} \right ]_{f(x)=f_{m-1}(x)} 
+r_{mi} = -\left[ \frac{\alpha L(y_i,f(x_i))}{\alpha f(x_i)} \right]_{f(x)=f_{m-1}(x)} 
 $$
 
 (b)对$r_{mi}$拟合一个回归树，得到第m颗树的叶节点区域$R_{mj},j=1,2,3,...J$
