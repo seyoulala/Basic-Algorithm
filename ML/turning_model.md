@@ -6,24 +6,17 @@
 ```python
 
 
-def objective(hyperparameters, iteration):
-    """Objective function for grid and random search. Returns
-       the cross validation score from a set of hyperparameters."""
-    
-    # Number of estimators will be found using early stopping
+def objective(hyperparameters,iteration):
     if 'n_estimators' in hyperparameters.keys():
         del hyperparameters['n_estimators']
     
-     # Perform n_folds cross validation
-    cv_results = lgb.cv(hyperparameters, train_set, num_boost_round = 10000, nfold = N_FOLDS, 
-                        early_stopping_rounds = 100, metrics = 'auc', seed = 42)
-    
-    # results to retun
-    score = cv_results['auc-mean'][-1]
-    estimators = len(cv_results['auc-mean'])
-    hyperparameters['n_estimators'] = estimators 
-    
-    return [score, hyperparameters, iteration]
+    cv_result = lgb.cv(hyperparameters,train_data,num_boost_round=10000,nfold=N_FOLDS,early_stopping_rounds=100,metrics='auc',seed=42)
+    hyperparameters['n_estimators'] =len(cv_result['auc-mean'])
+    model = lgb.LGBMClassifier()
+    params = model.get_params()
+    params.update(hyperparameters)
+    score = cv_result['auc-mean'][-1]
+    return [score,params,iteration]
 ``` 
 ####  网格搜索
 
@@ -125,9 +118,16 @@ def evaluate(results, name):
     print('The highest cross validation score from {} was {:.5f} found on iteration {}.'.format(name, results.loc[0, 'score'], results.loc[0, 'iteration']))
     
     # Use best hyperparameters to create a model
-    hyperparameters = results.loc[0, 'hyperparameters']
-    model = lgb.LGBMClassifier(**hyperparameters)
+	hyperparameters = dict(**random_results.loc[0, 'hyperparameters'])
+	del hyperparameters['n_estimators']
+	
+
+# Cross validation with n_folds and early stopping
+	cv_results = lgb.cv(hyperparameters, train_set,
+                    num_boost_round = 10000, early_stopping_rounds = 100, 
+                    metrics = 'auc', nfold = N_FOLDS)
     
+	model = lgb.LGBMClassifier(n_estimators = len(cv_results['auc-mean']), **hyperparameters)
     # Train and make predictions
     model.fit(train_features, train_labels)
     preds = model.predict_proba(test_features)[:, 1]
