@@ -34,7 +34,7 @@ $$
 
 xgboost的稀疏感知算法能处理大规模稀疏数据,相比较与没有考虑数据稀疏性的算法,其运行速度要快50倍.
 
-<img src='/home/xyh/Pictures/xgboost.png'>
+<img src='https://github.com/seyoulala/Basic-Algorithm/blob/master/picture/xgboost.png'>
 
 算法首先统计当前节点中所有样本的梯度信息,**然后遍历每个特征没有缺失的样本**,分别将在特征上有缺失的样本分到左右两边.通过评分函数选出划分后取得gain最大的方向作为默认的方向,之后在改特征上遇到缺失,就会默认的将改特征划分到之前学出来的方向.
 
