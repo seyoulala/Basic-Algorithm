@@ -2,7 +2,7 @@
 ### 思路
 **使用变量来跟踪进位，从表头开始模拟逐位相加的过程**
 
-< img  src=‘https://leetcode-cn.com/problems/add-two-numbers/Figures/2/2_add_two_numbers.svg’ align=‘middle’>
+< img  src='https://leetcode-cn.com/problems/add-two-numbers/Figures/2/2_add_two_numbers.svg' align='middle'>
 
 伪代码如下:
 
