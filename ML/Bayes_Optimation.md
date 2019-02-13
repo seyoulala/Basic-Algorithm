@@ -94,7 +94,8 @@ def objective(params, n_folds = N_FOLDS):
     
     # Boosting rounds that returned the highest cv score
     n_estimators = int(np.argmax(cv_results['auc-mean']) + 1)
-
+	hyperparameters['n_estimators'] = n_estimators
+	
     # Write to the csv file ('a' means append)
 	out_file ='some_path'
     of_connection = open(out_file, 'a')
