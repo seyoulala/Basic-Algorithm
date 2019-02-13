@@ -64,6 +64,9 @@ def objective(params, n_folds = N_FOLDS):
     
     ITERATION += 1
     
+    if 'n_estimators' in hyperparameters:
+       del hyperparameters['n_estimators']
+	
     # Retrieve the subsample if present otherwise set to 1.0
     subsample = params['boosting_type'].get('subsample', 1.0)
     
