@@ -34,7 +34,6 @@ class Solution:
 
 
 #利用大根堆，适合海量数据
-
 def GetLeastNumbers_Solution(tinput, k):
 	if not k or not tinput or k > len(tinput):
 		return []
