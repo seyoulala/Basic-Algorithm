@@ -1,0 +1,101 @@
+
+####创建虚拟python环境
+1.安装依赖
+
+sudo yum install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl 
+
+2.安装pyenv
+curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+	
+3.配置环境变量
+vim ~/.bashrc
+if [ -d "${PYENV_ROOT}" ]; then
+  export PATH="${PYENV_ROOT}/bin:${PATH}"
+  eval "$(pyenv init -)"
+fi
+source ~/.bashrc
+
+4.安装python
+pyenv install 3.5.0
+
+5.virtualenv 创建虚拟python环境
+pyenv virtualenv 3.5.0 py3.5
+
+6.进入虚拟环境
+
+pyenv activate py3.5
+
+python  ##看下安装的Python版本是否3.5.0
+
+
+#####以下为安装airflow步骤
+
+7、export AIRFLOW_GPL_UNIDECODE=yes
+
+8、pip install apache-airflow
+出现错误 error: command 'gcc' failed with exit status 1
+
+执行 sudo yum install gcc libffi-devel python-devel openssl-devel
+如果出现
+You are using pip version 9.0.1, however version 18.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command：
+执行
+pip install --upgrade pip
+
+如果出现Command "python setup.py egg_info" failed with error code 1 错误：
+
+python -m pip install --upgrade --force pip  
+
+pip install setuptools==44.0.0
+
+9、export AIRFLOW_HOME=~/airflow
+
+10、安装mysql 依赖：
+pip install pymysql
+yum install python-devel mysql-devel
+yum install MySQL-python
+pip install mysql-python
+pip install mysqlclient 
+
+11.修改~/airflow/airflow.cfg(需要在58.59.11.86上建一个编码为utf8的airflow库)
+vim ~/airflow/airflow.cfg
+sql_alchemy_conn = mysql://etl:6sY2*(g3YTs131Kl@58.59.11.86:3306/airflow
+
+12.airflow initdb
+
+raise Exception("Global variable explicit_defaults_for_timestamp needs to be on (1) for mysql")：
+解决方法：58.59.11.86的 mysql.cnf 设置explicit_defaults_for_timestamp = 1
+
+13.airflow webserver -p 8080
+如果出现TypeError: b'45e4a9d0a64858ee9cdf8bb5300ea3c65c9c2849' is not JSON serializable
+在 home/app/.pyenv/versions/3.5.0/lib/python3.5/json/encoder.py def default(self, o):函数加上        
+	   if isinstance(obj, bytes):
+            return str(o, encoding='utf-8');
+        return json.JSONEncoder.default(self, o)
+	
+14、检查web端是否能打开
+浏览器输入 http://58.59.11.88:8080/admin/	
+看是否有问题
+
+		
+#####以下为airflow配置CeleryExeutor操作步骤
+
+CeleryExecutor 需要 Python 环境安装有 celery。
+
+第一步： 安装celery
+pip install celery
+
+第二步：安装 redis
+先从 https://redis.io/download 下载稳定版本，
+tar -zxvf redis-4.0.11.tar.gz
+cd redis-4.0.11
+
+make      #编译
+make test  #验证
+cp redis.conf src/  #将配置文件复制以可执行文件同一目录
+cd src
+./redis-server redis.conf #按默认方式启动 redis-server ，仅监听 127.0.0.1 ，若监听其他 ip 修改为 bind 0.0.0.01234567
+
+第三步：安装 python 的 redis 包，为启动 worker 作准备
+pip install redis
+
