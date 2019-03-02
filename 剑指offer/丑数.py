@@ -31,28 +31,23 @@
 目前指针指向1,0,0，队列头arr[1] * 2 = 4,  arr[0] * 3 = 3, arr[0] * 5 = 5
 """
 
-
 class Solution:
-    def GetUglyNumber(self, index):
+    def GetUglyNumber_Solution(self, index):
+        # write code here
         if not index:
             return 0
-        array = [1] * index
-        nextindex = 1
 
-        index2 = 0
-        index3 = 0
-        index5 = 0
-        while nextindex < index:
-            minval = min(array[index2] * 2, array[index3]
-                         * 3, array[index5] * 5)
-            array[nextindex] = minval
-
-            while array[index2] * 2 <= array[nextindex]:
-                index2 += 1
-            while array[index3] * 3 <= array[nextindex]:
-                index3 += 1
-            while array[index5] * 5 <= array[nextindex]:
-                index5 += 1
-            nextindex += 1
-
-        return array[index - 1]
+        index_2 = 0
+        index_3 = 0
+        index_5 = 0
+        stack = [1]
+        while len(stack) <= index:
+            minnum = min(stack[index_2] * 2, stack[index_3] * 3, stack[index_5] * 5)
+            stack.append(minnum)
+            if  stack[index_2]*2 == minnum:
+                index_2 += 1
+            if  stack[index_3]*3 == minnum:
+                index_3 += 1
+            if  stack[index_5]*5 == minnum:
+                index_5 += 1
+        return stack[index -1]
