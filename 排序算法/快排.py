@@ -20,6 +20,27 @@ def QuickSort(input_list, left, right):
         QuickSort(input_list,split_index+1,right)
 
 
+def quick_sort(array):
+	if not array:
+		return None
+	left = 0
+	right = len(array)-1
+	stack = []
+	stack.append(right)
+	stack.append(left)
+	while stack:
+		left = stack.pop()
+		right = stack.pop()
+		index = partiton(array,left,right)
+		if left<index-1:
+			stack.append(index-1)
+			stack.append(left)
+		if right> index+1:
+			stack.append(right)
+			stack.append(index+1)
+
+
+
 def split(input_list,left,right):
     """
 
