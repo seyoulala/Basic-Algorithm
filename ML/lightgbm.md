@@ -125,6 +125,7 @@ for (size_t out_i = 0; out_i < find_direction.size(); ++out_i) {
 
 ![](https://img-blog.csdnimg.cn/20181231192237576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjAwMTA4OQ==,size_16,color_FFFFFF,t_70)
 
+
 有区别吗？其实并没有，因为下一次根据Leaf-wise原则无非就是选取左面和右面一个进行下去即可所以说1,3到底在左面还是右面并没有关系，可是当有缺省值时就完全不一样了，比如这里有一个缺省值5.于是上图就变为：
 
 ![](https://img-blog.csdnimg.cn/20181231192725533.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjAwMTA4OQ==,size_16,color_FFFFFF,t_70)
