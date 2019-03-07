@@ -138,7 +138,7 @@ $$
 对于提升树回归问题中，使用的是平方损失，这样很好优化，只需要求导。但是对于一般的损失函数的话是利用损失函数的负梯度在当前模型的值 作为回归问题中残差的近似
 
 $$
-\left [ \frac{\alpha L(y,f(x_i))}{\alpha f(x_i)}  \right]_{f(x)=f_{m-1}(x)} 
+  [\frac{\alpha L(y,f(x_i))}{\alpha f(x_i)}]_{f(x)=f_{m-1}(x)} 
 $$
 
 **伪代码如下**
@@ -157,7 +157,7 @@ $$
 (a)对$i=1,2,3,,,N$,计算
 
 $$
-r_{mi} = \left [ \frac{\alpha L(y_i,f(x_i))}{\alpha f(x_i)} \right ]_{f(x)=f_{m-1}(x)} 
+r_{mi} = [ \frac{\alpha L(y_i,f(x_i))}{\alpha f(x_i)} ]_{f(x)=f_{m-1}(x)} 
 $$
 
 (b)对$r_{mi}$拟合一个回归树，得到第m颗树的叶节点区域$R_{mj},j=1,2,3,...J$
