@@ -1,4 +1,4 @@
-#Transformer
+# Transformer
 
 ##introduction
 Transformer 用于神经机器翻译,这个架构抛弃了传统的用RNN和CNN来提取特征.因为RNN无法并行,Transformer并行速度也比CNN更快.
