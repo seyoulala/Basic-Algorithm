@@ -1,6 +1,7 @@
 # Transformer
 
-##introduction
+## introduction
+
 Transformer 用于神经机器翻译,这个架构抛弃了传统的用RNN和CNN来提取特征.因为RNN无法并行,Transformer并行速度也比CNN更快.
 
 Transformer的encoder部分使用6个堆叠的block,每一个block又分为两层,一个self-attention层,还有一个前馈神经网络层.decoder部分也是6个block的结构的stack,每一个block由三个层组成,self-attention层,Encoder-Decoder-Attention层,还有前馈神经网络层.
