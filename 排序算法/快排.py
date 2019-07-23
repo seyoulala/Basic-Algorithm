@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Author  : xuyinghao
-
+import random
 
 """
 """
@@ -49,7 +49,9 @@ def split(input_list,left,right):
     :param right:
     :return: 返回分割点index
     """
-    base = input_list[left] #以左边第一个为基准值
+    # base = input_list[left] #以左边第一个为基准值
+    random_index = left+random.randint(0,right-left)
+    base = input_list[random_index]
     #left指针和right指针重合时，循环结束
     while left < right:
         # 从右向左扫描，找到比base小的数
@@ -70,7 +72,6 @@ def split(input_list,left,right):
 if __name__ == '__main__':
     input_list = [6, 4, 8, 9, 2, 3, 1]
     print('排序前:', input_list)
-    # QuickSort(input_list, 0, len(input_list) - 1)
+    QuickSort(input_list, 0, len(input_list) - 1)
     # print('排序后:', input_list)
-    quick_sort(input_list)
     print("排序后",input_list)
