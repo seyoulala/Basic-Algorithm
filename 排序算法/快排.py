@@ -31,7 +31,7 @@ def quick_sort(array):
 	while stack:
 		left = stack.pop()
 		right = stack.pop()
-		index = partiton(array,left,right)
+		index = split(array,left,right)
 		if left<index-1:
 			stack.append(index-1)
 			stack.append(left)
@@ -67,9 +67,10 @@ def split(input_list,left,right):
 
 
 
-
 if __name__ == '__main__':
     input_list = [6, 4, 8, 9, 2, 3, 1]
     print('排序前:', input_list)
-    QuickSort(input_list, 0, len(input_list) - 1)
-    print('排序后:', input_list)
+    # QuickSort(input_list, 0, len(input_list) - 1)
+    # print('排序后:', input_list)
+    quick_sort(input_list)
+    print("排序后",input_list)
