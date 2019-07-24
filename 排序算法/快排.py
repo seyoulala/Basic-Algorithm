@@ -50,7 +50,7 @@ def split(input_list,left,right):
     :return: 返回分割点index
     """
     # base = input_list[left] #以左边第一个为基准值
-    random_index = left+random.randint(0,right-left)
+    random_index = random.randint(left,right)
     base = input_list[random_index]
     #left指针和right指针重合时，循环结束
     while left < right:
@@ -73,5 +73,6 @@ if __name__ == '__main__':
     input_list = [6, 4, 8, 9, 2, 3, 1]
     print('排序前:', input_list)
     QuickSort(input_list, 0, len(input_list) - 1)
+    # quick_sort(input_list)
     # print('排序后:', input_list)
     print("排序后",input_list)
