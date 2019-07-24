@@ -55,8 +55,6 @@ class Solution:
         return None
 
     def FindFirstCommonNode2(self, phead1, phead2):
-        if phead1 is None and phead2 is None:
-            return None
         if phead1 is None or phead2 is None:
             return None
 
@@ -72,7 +70,7 @@ class Solution:
         # 记录共同元素
         first = None
 
-        while len(stack1) and len(stack2):
+        while len(stack1)>0 and len(stack2)>0:
             p1 = stack1.pop()
             p2 = stack2.pop()
             if p1 is p2:
