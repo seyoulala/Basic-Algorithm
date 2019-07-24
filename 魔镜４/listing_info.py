@@ -41,11 +41,15 @@ listing_info['auditing_date'] = pd.to_datetime(listing_info['auditing_date'])
 
 agg_ = {
 	'listing_id': ['nunique'],
-	'term': ['min', 'max', 'mean'],
-	'rate': ['min', 'max', 'mean'],
-	'principal': ['min', 'max', 'mean']
+	'term': ['min', 'max', 'mean'],## 标的期数
+	'rate': ['min', 'max', 'mean'],##标的期率
+	'principal': ['min', 'max', 'mean']##标的总金额
 
 }
+"""
+这里没有划窗，根据渔佬开源方案，分３／６／９／１２进行滑窗的效果会更好
+
+"""
 train_feature_table = pd.DataFrame()
 for time in time_range:
 	tmp_train = train.loc[train['auditing_date'] == time, ['user_id']]
@@ -99,6 +103,15 @@ train_feature_table['principal_more_flag'] = train_feature_table.apply(
 	lambda x: 1 if (x['principal'] - x['principal_mean']) > 0 else 0, axis=1)
 test_feature_table['principal_more_flag'] = test_feature_table.apply(
 	lambda x: 1 if (x['principal'] - x['principal_mean']) > 0 else 0, axis=1)
+
+"""
+
+此处还可以衍生
+１．近3/6月标的期数/费率占6/9/12均值的比例
+
+２．当前金额占近3/6/9月均值比例
+
+"""
 
 train_feature_table.head()
 test_feature_table.head()
