@@ -21,7 +21,7 @@ class Solution:
         num = []
         for i in s:
             if i in dict_.keys():
-                num.app end(dict_[i])
+                num.append(dict_[i])
             elif i == '+' or i == '-':
                 continue
             else:

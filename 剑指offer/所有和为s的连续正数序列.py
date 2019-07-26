@@ -17,6 +17,12 @@
 想反只需要增加end.
 
 终止条件，begin<(s+1)/2,并且end< s
+
+思路２:
+    由于要求的是连续的正整数数组,因此数组的求和可以用等差数列的求和公式来求解
+    首先划定一个长度为１的窗口,求窗口内连续数字的和，若窗口内的数比要求的数更小
+    那么窗口的右边移动一位，若窗口内的数要更大，那么窗口左边界移动一位。等到左边
+    界赶上右边界的时候循环结束
 """
 
 
@@ -35,6 +41,30 @@ class Solution:
                     break
         return res
 
+    def FindContinuousSequence1(self, tsum):
+        """
+        由于要求的是连续的真整数数组,因此数组的求和可以用等差数列的求和公式来求解
+        #首先划定一个长度为１的窗口,求窗口内连续数字的和，若窗口内的数比要求的数更小
+        那么窗口的右边移动一位，若窗口内的数要更大，那么窗口左边界移动一位
+        :param tsum:
+        :return:
+        """
+        begin=1
+        end=2
+        res =[]
+        while begin<end:
+            #求窗口内的和,等差数列求和公式
+            total_sum = (end+begin)*(end-begin+1)/2
+            if total_sum ==tsum:
+                #如果窗口内的数和目标值相等的话，那就返回窗口内连续的数值
+                res.append(list(range(begin,end+1)))
+                begin+=1
+            elif total_sum>tsum:
+                begin+=1
+            else:
+                end+=1
+        #若循环退出了还没有找到，说明已经找不到了
+        return res
 
 s = Solution()
 print(s.FindContinuousSequence(100))
