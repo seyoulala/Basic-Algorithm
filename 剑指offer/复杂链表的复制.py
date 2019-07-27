@@ -118,12 +118,12 @@ class Solution:
             labelList.append(head.label)
             head = head.next
         # random节点的索引，如果没有则为1
-        labelIndexList = map(lambda c: nodeList.index(c) if c else -1, randomList)
+        labelIndexList = list(map(lambda c: nodeList.index(c) if c else -1, randomList))
 
         dummy = RandomListNode(0)
         pre = dummy
         # 节点列表，只要把这些节点的random设置好，顺序串起来就ok了。
-        nodeList = map(lambda c: RandomListNode(c), labelList)
+        nodeList = list(map(lambda c: RandomListNode(c), labelList))
         # 把每个节点的random绑定好，根据对应的index来绑定
         for i in range(len(nodeList)):
             if labelIndexList[i] != -1:
