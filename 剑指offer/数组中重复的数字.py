@@ -21,7 +21,7 @@ class Solution:
         if len(numbers)<=0 or numbers is None:
             return -1
         for i in numbers:
-            if i<0 or i> len(numbers)-1:
+            if i < 0 or i > len(numbers)-1:
                 return -1
         rep_num =[]
         for i in range(len(numbers)):
