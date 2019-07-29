@@ -24,6 +24,33 @@ class Solution:
 
         return pMergeHead
 
+
+    def Merge2(self,phead1,phead2):
+        """
+        非递归版本,使用一个队列来保存两个链表，使用比较器来排序链表的节点
+        """
+        if phead1 is None:
+            return phead2
+        if phead2 is None:
+            return phead1
+        nodes = []
+        while phead1:
+            nodes.append(phead1)
+            phead1=phead1.next
+        while phead2:
+            nodes.append(phead2)
+            phead2=phead2.next
+
+        nodes= sorted(nodes,key=lambda x:x.val,reverse=False)
+        #构建一个哑节点
+        dumpy = ListNode(0)
+        preNode = dumpy
+        while nodes:
+            preNode.next = nodes.pop(0)
+            preNode = preNode.next
+        return dumpy.next
+        
+
 if __name__ =='__main__':
     node1 = ListNode(1)
     node2 = ListNode(2)
