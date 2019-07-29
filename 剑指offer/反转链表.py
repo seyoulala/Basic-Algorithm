@@ -23,6 +23,21 @@ class Solution:
             preHead = pHead  # 前一节点移动
             pHead = tmp  # 当前节点更新
         return preHead
+    def ReversedList2(self,pHead):
+        #将当前链表中值保存在一个栈中，栈是先进后出的，因此可以达到逆序的效果
+        if pHead is None or pHead.next is None:
+            return pHead
+        nodes =[]
+        while pHead:
+            nodes.append(pHead.val)
+            pHead=pHead.next
+        dumpy=ListNode(0)
+        prehead =dumpy
+        while nodes:
+            prehead.next=ListNode(nodes.pop())
+            prehead = prehead.next
+        return dumpy.next
+
 
 
 node1 = ListNode(1)
@@ -34,7 +49,7 @@ node1.next = node2
 node2.next = node3
 node3.next = node4
 if __name__ == "__main__":
-    S = Solution().ReversedList(node1)
+    S = Solution().ReversedList2(node1)
     while S:
         print(S.val)
         S = S.next
