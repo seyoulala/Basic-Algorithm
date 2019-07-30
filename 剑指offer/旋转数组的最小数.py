@@ -4,6 +4,7 @@
 # @Author  : Your Name (you@example.org)
 # @Link    : http://example.org
 # @Version : $Id$
+
 """
 有序旋转数组的最小值
 1. 旋转数组的首元素肯定不小于尾元素的值，使用二分查找，若中间元素的
