@@ -20,6 +20,67 @@ GBDT缺点：**对于每一个特征的每一个分裂点，都需要遍历全�
 
 goss对应的是上图中的算法２,其中a表示对大梯度样本的采样率，b是对小梯度样本的采样率.首先按照一阶梯度(实际上是按照一阶梯度以及二阶梯度的乘积)对样本进行排序,然后取前topN作为大梯度样本集合topSet（topN的个数是通过a确定的）,然后在剩下的里面随机抽取（RandomPick为随机抽取算法）randN个作为小梯度样本集合randSet,最后将两者合并作为采用后的样本usedSet，我们就拿这个样本取训练，同时呢为了尽可能不改变数据集的概率分布（因为这样抽的结果就是小梯度的样本被不断的减少再减少），所以还有给小样本一个补偿，那就是小梯度样本的一阶梯度以及二阶梯度乘以一个常数即（1-a）/b，可以看到当a=0时就变成了随机采用啦，这样抽的结果还是能保持准确率的，这里有详细的数学证明，请看论文的3.2部分。
 
+**goss的核心代码**
+
+```c++
+  data_size_t BaggingHelper(Random& cur_rand, data_size_t start, data_size_t cnt, data_size_t* buffer, data_size_t* buffer_right) {
+    if (cnt <= 0) {
+      return 0;
+    }
+    std::vector<score_t> tmp_gradients(cnt, 0.0f);
+    for (data_size_t i = 0; i < cnt; ++i) {
+      for (int cur_tree_id = 0; cur_tree_id < num_tree_per_iteration_; ++cur_tree_id) {
+        size_t idx = static_cast<size_t>(cur_tree_id) * num_data_ + start + i;
+        tmp_gradients[i] += std::fabs(gradients_[idx] * hessians_[idx]);
+      }
+    }
+      //tok_k为大梯度样本的采样个数
+    data_size_t top_k = static_cast<data_size_t>(cnt * config_->top_rate);
+      //other_k为小梯度样本的采样个数
+    data_size_t other_k = static_cast<data_size_t>(cnt * config_->other_rate);
+    top_k = std::max(1, top_k);
+      //根据一阶梯度以及二阶梯度的乘积来对样本进行排序
+    ArrayArgs<score_t>::ArgMaxAtK(&tmp_gradients, 0, static_cast<int>(tmp_gradients.size()), top_k - 1);
+    score_t threshold = tmp_gradients[top_k - 1];
+	//对小梯度样本的补偿
+    score_t multiply = static_cast<score_t>(cnt - top_k) / other_k;
+    data_size_t cur_left_cnt = 0;
+    data_size_t cur_right_cnt = 0;
+    data_size_t big_weight_cnt = 0;
+    for (data_size_t i = 0; i < cnt; ++i) {
+      score_t grad = 0.0f;
+      for (int cur_tree_id = 0; cur_tree_id < num_tree_per_iteration_; ++cur_tree_id) {
+        size_t idx = static_cast<size_t>(cur_tree_id) * num_data_ + start + i;
+        grad += std::fabs(gradients_[idx] * hessians_[idx]);
+      }
+      if (grad >= threshold) {
+        buffer[cur_left_cnt++] = start + i;
+        ++big_weight_cnt;
+      } else {
+        data_size_t sampled = cur_left_cnt - big_weight_cnt;
+          //还需要抽取的小样本数
+        data_size_t rest_need = other_k - sampled;
+          //总共需要抽取的小样本数
+        data_size_t rest_all = (cnt - i) - (top_k - big_weight_cnt);
+        double prob = (rest_need) / static_cast<double>(rest_all);
+        if (cur_rand.NextFloat() < prob) {
+          buffer[cur_left_cnt++] = start + i;
+          for (int cur_tree_id = 0; cur_tree_id < num_tree_per_iteration_; ++cur_tree_id) {
+            size_t idx = static_cast<size_t>(cur_tree_id) * num_data_ + start + i;
+            gradients_[idx] *= multiply;
+            hessians_[idx] *= multiply;
+          }
+        } else {
+          buffer_right[cur_right_cnt++] = start + i;
+        }
+      }
+    }
+    return cur_left_cnt;
+  }
+```
+
+
+
 
 
 #### EFB
@@ -131,7 +192,7 @@ if (use_onehot) {
 
 ```c++
 非one-hot（many vs many）
-//过滤bin，要求bin中有一定的样本数，根据配置文件中的cat_smooth
+//过滤bin，要求bin中有一定的样本数，根据配置文件中的cat_smooth,只在many_to_many的时候才会生效
 for (int i = 0; i < used_bin; ++i) {
         if (data_[i].cnt >= meta_->config->cat_smooth) {
           sorted_idx.push_back(i);
