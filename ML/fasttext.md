@@ -103,14 +103,14 @@ textcnn使用预先训练好的词向量作embedding layer。对于数据集里�
 **[batch_size, seq_len, embed_size]**
 
 3.卷积层：NLP中卷积核宽度与embed-size相同，相当于一维卷积。
-3个尺寸的卷积核：(2, 3, 4)，每个尺寸的卷积核有100个。卷积后得到三个特征图：**[100, batch_size, seq_len-1]**
-**[100, batch_size,** **seq_len-2]**
-**[100, batch_size,** **seq_len-3]**
+3个尺寸的卷积核：(2, 3, 4)，每个尺寸的卷积核有100个。卷积后得到三个特征图：**[batch_size, 100, seq_len-1,1]**
+**[batch_size, 100,** **seq_len-2,1]**
+**[batch_size, 100,** **seq_len-3,1]**
 
 4.池化层：对三个特征图做最大池化
-**[batch_size, 100]**
-**[batch_size, 100]**
-**[batch_size, 100]**
+**[batch_size, 100,1]**
+**[batch_size, 100,1]**
+**[batch_size, 100,1]**
 
 5.拼接：
 **[batch_size, 300]**
@@ -169,4 +169,81 @@ class TextCNN(nn.Module):
 		return  out
 
 ```
+
+
+
+# TextRNN
+
+
+
+![](../image/textrnn.png)
+
+textRNN和普通的rnn没有什么不同，只不过将cell换成了双向LSTM，其结构为多对一的结构，在进行分类任务的时候取出最后一个隐藏层的状态送入最后的全连接层进行分类。
+
+数据处理：所有句子padding成相同的长度
+
+1. 模型输入:[batch_size,max_length]
+
+2. 经过embedding层：加载预训练词向量或者随机初始化, 词向量维度为embed_size：
+
+    **[batch_size,max_length,embed_dim]**
+
+3. 双向LSTM：隐层大小为hidden_size，得到所有时刻的隐层状态(前向隐层和后向隐层拼接)
+
+    **[batch_size,max_length,hidden_size*2]**
+
+4. 拿出最后时刻的隐层值：
+    **[batch_size, hidden_size \* 2]**
+
+5. 全连接层：num_class是预测的类别数
+
+6. 预测：softmax归一化，将num_class个数中最大的数对应的类作为最终预测
+    **[batch_size, 1]**
+
+分析：
+LSTM能更好的捕捉长距离语义关系，但是由于其递归结构，不能并行计算，速度慢。
+
+```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# @Time : 2019/5/22 下午2:24
+# @Author : Ethan
+# @Site :
+# @File : demo1.py
+# @Software: PyCharm
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+##fasttext 模型结构
+
+class TextRNN(nn.Module):
+	def __init__(self,n_vocab,embed_dim,hidden_size,n_class):
+		super(TextRNN,self).__init__()
+
+		self.n_vocab = n_vocab
+		self.embed_dim = embed_dim
+		self.hidden_size = hidden_size
+		self.n_class = n_class
+		self.Embedding = nn.Embedding(self.n_vocab,self.embed_dim,padding_idx=0)
+		self.lstm = nn.LSTM(input_size=self.embed_dim,hidden_size=self.hidden_size,num_layers=1,bidirectional=True,batch_first=True)
+		self.fc = nn.Linear(self.hidden_size*2,self.n_class)
+
+	def forward(self, x):
+		##x [batch_size,max_length]
+		out = self.Embedding(x) #[batch_size,max_length,embed_dim]
+		out,(h,c) = self.lstm(out) #[batch_size,max_length,hidden_size]
+		out = self.fc(out[:,-1,:]) #取出最后一个隐藏层的状态
+		return  out
+
+```
+
+
+
+​    
+
+​    
 
