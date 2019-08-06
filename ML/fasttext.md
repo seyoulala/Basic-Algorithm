@@ -243,7 +243,48 @@ class TextRNN(nn.Module):
 
 
 
-​    
+  
 
-​    
+# ELMO
+
+## 1. elmo整体架构
+
+![](../image/elmo1.png)    
+
+输入维度为[batch_size,seq_len,max_ characters_per_token],其中`max_characters_per_token`表示每个单词最大字符数，paper中使用固定的50,
+
+**数据流向**
+
+1. char Encoder Layer,因为elmo是基于char级别进行编码的，所以会对一个单词的所有char进行embedding得到一个表示，因此一个单词经过char encoder　Layer进行编码后其形状为[batch_size,seq_len,embed_dim]
+
+2. 然后将char encoder layer的输出通过biLSTM层得到[L+1,batch_size,seq_len,2*embed_dim]
+3. scalar mixer ,在得到lstm各个层的表征后会经过一个混合层,它会将前面这些层的表示进行线性融合，得到最终的ELMO向量,输出为[batch_size,seq_len,2*embed_dim]
+
+## 2.字符编码层
+
+输入维度为[batch_size,max_len,max_ characters_per_token],输出为[batch_size,max_len,embed_dim]
+
+![](../image/elmo2.png)
+
+因为是对所有的char进行编码,所以首先会先将input reshap成[batch_size*seq_len,C],然后通过char Embedding成，每个char被编码为d维的向量
+
+1. char Embedding层，对char进行编码,char词表的大小大概为262,其中0-255，实际上所有char的词表大概是262，其中0-255是char的unicode编码，256-261这6个分别是`<bow>`（单词的开始）、`<eow>`（单词的结束）、 `<bos>`（句子的开始）、`<eos>`（句子的结束）、`<pow>`（单词补齐符）和`<pos>`（句子补齐符）
+2. 这里用的是不同scale的卷积层，注意是在宽度上扩展，而不是深度上，即输入都是一样的，卷积之间的不同在于其kernel_size和channel_size的大小不同，用于捕捉不同n-grams之间的信息，这点其实是仿照 TextCNN 的模型结构。假设有m个这样的卷积层，其kernel_size从  k1, k2, ..., km，比如1,2,3,4,5,6,7这种，其channel_size从 d1,d2,...,dm ，比如32,64,128,256,512,1024这种。注意：这里的卷积都是1维卷积，即只在序列长度上做卷积。与图像中的处理类似，在卷积之后，会经过MaxPooling进行池化，这里的目的主要在于经过前面卷积出的序列长度往往不一致，后期没办法进行合并，所以这里在序列维度上进行MaxPooling，其实就是取一个单词中最大的那个char的表示作为整个单词的表示。最后再经过激活层，这一步就算结束了。根据不同的channel_size的大小，这一步的输出维度分别为BW∗d1,BW∗d2,...,BW∗dm
+3. concat层:上一层得到的是m个不同维度的矩阵,为了后期方便的处理，在最后一维上进行拼接然后reshape成[batch_size,seq_len,d1+d2+..+dm]
+4. Highway层:Highway（参见：https://arxiv.org/abs/1505.00387 ）是仿照图像中residual的做法，在NLP领域中常有应用，看代码里面的实现，这一层实现的公式见下面：其实就是一种全连接+残差的实现方式，只不过这里还需要一个element-wise的gate矩阵对$x$和$f(A(x))$进行变换。这里需要经过H层这样的Highway层，输出维度仍为$B∗W∗(d1+d2+...+dm)$ 。
+5. Linear层,经过前面的计算,得到的维度$d1+d2+d3+..+dm$其维度往往比较长,这里通过一个Linear层进行映射将其维度映射为D,这一层的输出为[batch_size,seq_len,embed_dim]
+
+
+
+## blstm
+
+![](/home/ethan/Desktop/Basic-Algorithm/image/blstm.png)
+
+
+
+**BiLSTM架构图**
+
+![](../image/blstm1.png)
+
+$h$为LSTM隐藏层的`hidden_size`,可能比较大,比如Ｄ=512,h=4096这种,因此在每一层结束后需要一个线性层来将维度映射回去而后再输入到下一层中。最后的输出是将每一层的所有输出以及embedding的输出，进行stack，每一层的输出里面又是对每个timestep的正向和反向的输出进行concat，因而最后的输出维度为(L+1)∗B∗W∗2D ，这里的 L+1 中的 +1 就代表着那一层embedding输出，其会复制成两份，以与biLMs每层的输出维度保持一致。
 
