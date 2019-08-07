@@ -137,7 +137,7 @@ space = {
 这里解释一下分布的类型
 
 - `choice`: categorical variables
- 
+
 - `quniform`:discrete uniform(整数间隔)
 
 - `uniform`:continues uniform(浮点数间隔)
