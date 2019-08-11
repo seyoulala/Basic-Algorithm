@@ -193,3 +193,51 @@ def manLcpsLength(string):
 
 
 
+**头条题目**
+
+```
+给定一个字符串'abc12321',在字符串最后添加字符使得原字符串变为回文串，且添加的字符最短，输出添加的字符串
+```
+
+**思路:先找到字符串中最长的回文串，然后将非回文部分逆序添加到字符串后面，如’abc12321‘,最长回文串为’12321‘,将非回文部分'abc'逆序输出**
+
+```python
+def shortestEnd(string):
+	"""
+	在一个字串符后面加上字符，使得该字符串变为回文串，同时添加的字符最少
+	:param string:
+	:return:
+	"""
+	# tmp_string = string
+	if string is None or len(string) == 0:
+		return None
+    ##处理成奇回文
+	string = list(map(lambda x: "#" + x, list(string)))
+	string = ''.join(string) + '#'
+	pArr = [0] * len(string)
+	pR = -1
+	index = -1
+	for i in range(len(string)):
+		if pR > i:
+			pArr[i] = min(pArr[2 * index - i], pR - i)
+		else:
+			pArr[i] = 1
+		while (i + pArr[i] < len(string) and (i - pArr[i] > -1)):
+			if (string[i + pArr[i]] == string[i - pArr[i]]):
+				pArr[i] += 1
+			else:
+				break
+		##更新
+		if i + pArr[i] > pR:
+			pR = i + pArr[i]
+			index = i
+
+		# 如果回文右边界来到了最后一个位置
+		if pR == len(string):
+			C = i
+			##对称点坐标
+			i_ = 2*C-pR+1
+			break
+	return  string[:i_].replace('#','')[::-1]
+```
+
