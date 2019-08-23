@@ -241,3 +241,36 @@ def shortestEnd(string):
 	return  string[:i_].replace('#','')[::-1]
 ```
 
+**给定一个字符串 `s`，找到 `s` 中最长的回文子串。你可以假设 `s` 的最大长度为 1000。**
+
+```python
+def longstring(string):
+	string = list(map(lambda x: "#"+x,list(string)))
+	string =''.join(string)+'#'
+	length = len(string)
+	pArr =[0]*length
+	pR = -1
+	index = -1
+	max_result = float('-inf')
+	for i in range(length):
+		if pR >i:
+			pArr[i] = min(pArr[2*index-i],pR-i)
+		else:
+			pArr[i]=1
+		while (i+pArr[i]<length and i-pArr[i]>-1):
+			if string[i+pArr[i]]==string[i-pArr[i]]:
+				pArr[i]+=1
+			else:
+				break
+		if i+pArr[i]>pR:
+			pR = i+pArr[i]
+			index=i
+		if pR == length:
+			c = i
+			i_ = 2*c-pR+1
+			break
+	max_i = max(pArr)
+	max_index = pArr.index(max_i)
+	return   string[max_index-max_i+1:max_index+max_i].replace('#','')
+```
+
