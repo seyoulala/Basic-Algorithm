@@ -61,3 +61,4 @@ BFPRT算法的最坏时间复杂度为 ![[公式]](https://www.zhihu.com/equatio
 如果选用3，有 ![[公式]](https://www.zhihu.com/equation?tex=T%28n%29%3DT%28n%2F3%29%2BT%282n%2F3%29%2Bc%5Ccdot+n) ，其操作元素个数还是 ![[公式]](https://www.zhihu.com/equation?tex=n) 。
 
 如果选取7，9或者更大，在插入排序时耗时增加，常数 ![[公式]](https://www.zhihu.com/equation?tex=c) 会很大，有些得不偿失。
+
