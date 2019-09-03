@@ -15,6 +15,7 @@
 
 
 class TreeNode:
+
     def __init__(self, x):
         self.val = x
         self.left = None
@@ -23,6 +24,7 @@ class TreeNode:
 
 class Solution:
     # 前序遍历
+
     def preOrder(self, root):
         if root is None:
             return None
@@ -66,26 +68,25 @@ class Solution:
 
     # 后序遍历
     """
-    后序遍历中，要保证左孩子和右孩子都已被访问才能访问根结点，并且左孩子需在右孩子前访问（无右子树或者右子树已经访问过）
+    
     """
-
-    def postOrder(self, root):
-        if root == None:
+    def posorder(head):
+        if head is None:
             return
-        cur, pre, treeStack = root, None, []  # cur:current Node, pre: pre visited Node
-        treeStack.append(root)
+        helper1 = []
+        helper2 = []
         result = []
-        while len(treeStack) > 0:
-            cur = treeStack[-1]
-            # current node doesn't have child nodes or child nodes have been visited
-            if (cur.left == None and cur.right == None) or (pre != None and (pre == cur.left or pre == cur.right)):
-                result.append(cur.val)
-                pre = treeStack.pop()
-            else:
-                if cur.right != None:
-                    treeStack.append(cur.right)
-                if cur.left != None:
-                    treeStack.append(cur.left)
+        helper1.append(head)
+        while len(helper1) != 0:
+            cur = helper1.pop()
+            helper2.append(cur.val)
+            if cur.left != None:
+                helper1.append(cur.left)
+            if cur.right != None:
+                helper1.append(cur.right)
+        while len(helper2) != 0:
+            value = helper2.pop()
+            result.append(value)
         return result
 
 

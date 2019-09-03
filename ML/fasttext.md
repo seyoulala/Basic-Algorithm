@@ -278,7 +278,7 @@ class TextRNN(nn.Module):
 
 ## blstm
 
-![](/home/ethan/Desktop/Basic-Algorithm/image/blstm.png)
+![](../image/blstm.png)
 
 
 
