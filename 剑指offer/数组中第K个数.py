@@ -12,24 +12,31 @@
 """
 import heapq
 
+
 class Solution:
-    #构建大根堆
-    def GetLeastNumbers(self, tinput, k):
-        if len(tinput) == 0 or len(tinput) <k or k==0:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        if len(nums) < k or len(nums) == 0 or k == 0:
             return None
-        output = []
-        for i in tinput:
-            if len(output)<k:
-                output.append(i)
+        helper = []
+        for i in nums:
+            if len(helper) < k:
+                helper.append(i)
             else:
-                output = heapq.nlargest(k,output)
-                if output[0] > i:
+                heapq.heapify(helper)
+                if helper[0] > i:
                     continue
                 else:
-                    output[0] = i
-        return  output[::-1]
+                    heapq.heappop(helper)
+                    heapq.heappush(helper, i)
+        heapq.heapify(helper)
+        return helper[0]
 
 
-tinput1 = [4,5,1,6,2,7,3,8]
+if __name__ == '__main__':
+    s = Solution()
+    print(s.findKthLargest([2, 1], 2))
+
+
+tinput1 = [4, 5, 1, 6, 2, 7, 3, 8]
 s = Solution()
-print(s.GetLeastNumbers(tinput1,4))
+print(s.GetLeastNumbers(tinput1, 4))
