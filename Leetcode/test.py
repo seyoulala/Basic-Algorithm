@@ -36,23 +36,7 @@
 #       child = 2 * parent + 1
 #   array[parent] = tmp
 #   return array
-def isSum(array, aim):
-    if len(array) == 0 or aim is None:
-        return False
-    # 创建一个二维表
-    array_sum = sum(array)
-    length = len(array)
-    dp = [[False] * array_sum for i in range(length + 1)]
-    dp[length][aim] = True
-    for i in range(length)[::-1]:
-        for j in range(array_sum)[:-1]:
-            dp[i][j] = dp[i + 1][j]
-            if j + array[i] <= aim:
-                dp[i][j] = dp[i + 1][j] | dp[i + 1][j + array[i]]
-    return dp[0][0]
 
 
-if __name__ == "__main__":
-    arr = [1, 4, 8]
-    aim = 12
-    print(isSum(arr, 5))
+
+

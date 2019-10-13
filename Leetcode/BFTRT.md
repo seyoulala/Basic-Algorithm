@@ -16,7 +16,7 @@
 
 
 
-这里介绍一个比较好的算法，叫做**BFPTR算法**，又称为**中位数的中位数算法**，它的最坏时间复杂度为 ![[公式]](https://www.zhihu.com/equation?tex=O%28n%29) ，它是由**Blum、Floyd、Pratt、Rivest、Tarjan**提出。该算法的思想是**修改快速选择算法的主元选取方法**，提高算法在最坏情况下的时间复杂度。
+这里介绍一个比较好的算法，叫做**BFPRT算法**，又称为**中位数的中位数算法**，它的最坏时间复杂度为 ![[公式]](https://www.zhihu.com/equation?tex=O%28n%29) ，它是由**Blum、Floyd、Pratt、Rivest、Tarjan**提出。该算法的思想是**修改快速选择算法的主元选取方法**，提高算法在最坏情况下的时间复杂度。
 
 
 
