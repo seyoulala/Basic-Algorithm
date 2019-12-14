@@ -30,6 +30,11 @@ class Solution:
         for i in num:
             ans = ans * 10 + i
         if s[0] == '-':
-            return 0 - ans
+            res = 0 - ans
         else:
-            return ans
+            res = ans
+        if res < 0 and res >= -pow(2, 31):
+            return res
+        elif res > 0 and res <= pow(2, 31) - 1:
+            return res
+        return 0

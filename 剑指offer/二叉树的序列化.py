@@ -15,6 +15,7 @@ class TreeNode:
 
 
 class Solution:
+
     def serizlBypre(self, node: TreeNode)->str:
         # basecase
         if node is None:

@@ -17,7 +17,7 @@ def objective(hyperparameters,iteration):
     params.update(hyperparameters)
     score = cv_result['auc-mean'][-1]
     return [score,params,iteration]
-``` 
+```
 ####  网格搜索
 
 ```python

@@ -14,29 +14,31 @@
 3.然后将一个指针设置为头指针,其中一个指针不动,两个指针同时走,相遇的地方就是环的入口节点.
 """
 
+
 class ListNode:
-    def __init__(self,x):
+    def __init__(self, x):
         self.val = x
         self.next = None
 
-class  Solution:
-    def EntryNodeOfLoop(self,pHead):
+
+class Solution:
+    def EntryNodeOfLoop(self, pHead):
         if pHead is None:
-            return  None
-        Slow=pHead
+            return None
+        Slow = pHead
         Fast = pHead
         while Fast.next:
             Fast = Fast.next.next
             Slow = Slow.next
             # 快慢指针相遇
-            if Fast==Slow:
-                #设置一个指向头结点的指针
+            if Fast == Slow:
+                # 设置一个指向头结点的指针
                 Slow2 = pHead
                 while Slow2 != Slow:
                     Slow = Slow.next
                     Slow2 = Slow2.next
-                return  Slow
-
+                return Slow
+        return None
 
 
 node1 = ListNode(1)
@@ -54,5 +56,3 @@ node6.next = node3
 
 s = Solution()
 print(s.EntryNodeOfLoop(node1).val)
-
-
