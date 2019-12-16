@@ -101,3 +101,33 @@ def evaluate_accuracy(data_iter, net, device=None):
 	return acc_sum / n
 ```
 
+### 随机种子固定
+
+```python
+def seed_everything(seed=1234):
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.backends.cudnn.deterministic = True
+seed_everything()
+```
+
+### 清洗函数
+
+```python
+def preprocess(data):
+    '''
+    Credit goes to https://www.kaggle.com/gpreda/jigsaw-fast-compact-solution
+    '''
+    punct = "/-'?!.,#$%\'()*+-/:;<=>@[\\]^_`{|}~`" + '""“”’' + '∞θ÷α•à−β∅³π‘₹´°£€\×™√²—–&'
+    def clean_special_chars(text, punct):
+        for p in punct:
+            text = text.replace(p, ' ')
+        return text
+
+    data = data.astype(str).apply(lambda x: clean_special_chars(x, punct))
+    return data
+```
+
