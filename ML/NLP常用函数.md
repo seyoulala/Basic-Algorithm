@@ -131,3 +131,42 @@ def preprocess(data):
     return data
 ```
 
+### embedding相关函数
+
+```python
+#构建背景词和中心词
+def get_centers_and_contexts(dataset, max_window_size):
+    centers, contexts = [], []
+    for st in dataset:
+        if len(st) < 2:  # 每个句子至少要有2个词才可能组成一对“中心词-背景词”
+            continue
+        centers += st
+        for center_i in range(len(st)):
+            window_size = random.randint(1, max_window_size)
+            indices = list(range(max(0, center_i - window_size),
+                                 min(len(st), center_i + 1 + window_size)))
+            indices.remove(center_i)  # 将中心词排除在背景词之外
+            contexts.append([st[idx] for idx in indices])
+    return centers, contexts
+  
+#负采样，对每个正样本构造出K个负样本
+def get_negatives(all_contexts, sampling_weights, K):
+    all_negatives, neg_candidates, i = [], [], 0
+    population = list(range(len(sampling_weights)))
+    for contexts in all_contexts:
+        negatives = []
+        while len(negatives) < len(contexts) * K:
+            if i == len(neg_candidates):
+                # 根据每个词的权重（sampling_weights）随机生成k个词的索引作为噪声词。
+                # 为了高效计算，可以将k设得稍大一点
+                i, neg_candidates = 0, random.choices(
+                    population, sampling_weights, k=int(1e5))
+            neg, i = neg_candidates[i], i + 1
+            # 噪声词不能是背景词
+            if neg not in set(contexts):
+                negatives.append(neg)
+        all_negatives.append(negatives)
+    return all_negatives
+  
+```
+
