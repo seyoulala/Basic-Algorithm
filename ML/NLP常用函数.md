@@ -168,5 +168,38 @@ def get_negatives(all_contexts, sampling_weights, K):
         all_negatives.append(negatives)
     return all_negatives
   
+#定于数据类
+class MyDataset(torch.utils.data.Dataset):
+    def __init__(self, centers, contexts, negatives):
+        assert len(centers) == len(contexts) == len(negatives)
+        self.centers = centers
+        self.contexts = contexts
+        self.negatives = negatives
+
+    def __getitem__(self, index):
+        return (self.centers[index], self.contexts[index], self.negatives[index])
+
+    def __len__(self):
+        return len(self.centers)
+
+     
+#构造batch数据
+def batchify(data):
+    """用作DataLoader的参数collate_fn: 输入是个长为batchsize的list, 
+    list中的每个元素都是Dataset类调用__getitem__得到的结果
+    """
+    max_len = max(len(c) + len(n) for _, c, n in data)
+    centers, contexts_negatives, masks, labels = [], [], [], []
+    for center, context, negative in data:
+        cur_len = len(context) + len(negative)
+        centers += [center]
+        contexts_negatives += [context + negative + [0] * (max_len - cur_len)]
+        masks += [[1] * cur_len + [0] * (max_len - cur_len)]
+        labels += [[1] * len(context) + [0] * (max_len - len(context))]
+    return (torch.tensor(centers).view(-1, 1), torch.tensor(contexts_negatives),
+            torch.tensor(masks), torch.tensor(labels))
+  
+  
+
 ```
 
