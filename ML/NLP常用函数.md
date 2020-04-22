@@ -129,6 +129,16 @@ def preprocess(data):
 
     data = data.astype(str).apply(lambda x: clean_special_chars(x, punct))
     return data
+  
+  
+def clean_words(input_str):
+  """
+  input_str 是一个document
+  """
+    punctuation = '.,;:"!?”“_-'
+    word_list = input_str.lower().replace('\n',' ').split()
+    word_list = [word.strip(punctuation) for word in word_list]
+    return word_list
 ```
 
 ### embedding相关函数
@@ -202,4 +212,3 @@ def batchify(data):
   
 
 ```
-

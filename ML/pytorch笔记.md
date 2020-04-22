@@ -319,3 +319,5 @@ def lstm(inputs, state, params):
     return outputs, (H, C)
 ```
 
+### RandomSample和SequenceSample
+
