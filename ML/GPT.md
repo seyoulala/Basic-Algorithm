@@ -20,7 +20,6 @@ GPT模型使用Transformer的decoder架构来完成特征的提取。
 $$
 P(y|x^1,x^2,...,x^m) = softmax(h_{l}^mW_y) \\
 max L_2(C) = \sum_{(x,y)}log(P(y|x^1,x^2,...,x^m))
-
 $$
 通过pre-traninig来增强模型的泛化能力，同时能加速模型的收敛。综合第一阶段的pre-traning和第二阶段的fine-turning我们最终需要优化以下目标函数$L_3(C) =L_2(C)+\lambda*L_1(C)$,同时在fine-turning的阶段只需要学习线性层的参数$W_y$
 
