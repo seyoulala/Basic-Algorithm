@@ -123,7 +123,50 @@ class Solution:
 通过上述分析，然后结合框架我们就可以写出如下的代码:
 
 ```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        from collections import deque
+        def plusOne(cur,index):
+            if cur[index]=='9':
+                cur[index]='0'
+            else:
+                cur[index]= str(int(cur[index])+1)
+            return  ''.join(cur)
 
+        def minusOne(cur,index):
+            if cur[index]=='0':
+                cur[index]='9'
+            else:
+                cur[index]=str(int(cur[index])-1)
+            return ''.join(cur)
+        visited =set(dead for dead in deadends)
+        
+        step=0
+        que = deque()
+        que.appendleft('0000')
+        while  len(que)!=0:
+            size = len(que)
+            #当前队列中的所有节点都需要往外扩散
+            for i in range(size):
+                cur = que.pop()
+                # 判断是否达到终止条件
+                if cur in deadends:
+                    continue
+                if cur==target:
+                    return step
+                #将当前节点的邻居节点加入到队列中
+                for j in range(4):
+                    up = plusOne(list(cur),j)
+                    if up not in visited:
+                        que.appendleft(up)
+                        visited.add(up)
+                    down = minusOne(list(cur),j)
+                    if down not in visited:
+                        que.appendleft(down)
+                        visited.add(down)
+            #更新step
+            step+=1
+        return -1
 ```
 
 
