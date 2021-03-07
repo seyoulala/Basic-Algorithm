@@ -97,6 +97,45 @@ class Solution:
         return depth
 ```
 
+**dfs**
+
+注意和最大深度不一样，题目中要我们求的最小深度是指根节点到叶节点的最小深度
+
+所以：
+
+- root为空，说明是一个空节点返回0，也就是没有深度
+- root.left 为空同时root.right为空，说明当前节点是一个叶子节点，返回深度为1
+- 当root.left 不为空的时候，用左子树的最小深度去更新res，当root.right不为空的时候，用右子树的值去更新res。
+
+```python
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        if root is  None:
+            return 0
+        if root.left is None and root.right is None:
+            return 1
+        res = float('inf')
+        if root.left:
+            res = min(self.minDepth(root.left)+1,res)
+        if root.right:
+            res = min(self.minDepth(root.right)+1,res)
+        return res
+    def minDepth(self, root: TreeNode) -> int:
+        ## 二叉树后序遍历
+        if root is None:
+            return 0
+        left_depth = self.minDepth(root.left)
+        right_depth = self.minDepth(root.right)
+        if left_depth==0:
+            return  right_depth+1
+        elif  right_depth==0:
+            return left_depth+1
+        else:
+            return min(left_depth,right_depth)+1
+```
+
+
+
 # 三、解开密码锁的最少次数
 
 <img src="/Volumes/disk2/Basic-Algorithm/image/转动密码锁的次数.jpg" alt="img" style="zoom:50%;" />
@@ -169,5 +208,74 @@ class Solution:
         return -1
 ```
 
+**岛屿数量**
 
+```
+给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+
+岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+
+此外，你可以假设该网格的四条边均被水包围。
+
+ 
+
+示例 1：
+
+输入：grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+输出：1
+示例 2：
+
+输入：grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+输出：3
+
+```
+
+其实题目就是要我们找连通子图，假设我们从(0,0)左上角这个位置开始遍历，如果当前这个位置是一块陆地的话，我们就要从上下左右四个方向去找能连通的区域，通过bfs的方式我们可以最少的次数找到当前位置能连通的所有位置，同时将连通的区域标记为已访问。这样我们通过遍历grid中所有位置就能找到所有的岛屿数量
+
+```python
+from typing import  *
+from  collections import  deque
+class Solution:
+    directions = [(-1,0),(0,1),(1,0),(0,-1)]
+    def numIslands(self, grid: List[List[str]]) -> int:
+        if len(grid)==0:
+            return 0
+        row = len(grid)
+        col = len(grid[0])
+        visited = {(i,j):True for i in range(row) for j in range(col)}
+        queue = deque()
+        count=0
+
+        for i in range(row):
+            for j in range(col):
+                if visited[(i,j)] and grid[i][j]=="1":
+                    queue.append((i,j))
+                    visited[(i,j)]=False
+                    while len(queue)!=0:
+                        size = len(queue)
+                        for t in range(size):
+                            cur = queue.popleft()
+                            #当前节点往四周扩散
+                            for direct in self.directions:
+                                new_x = cur[0]+direct[0]
+                                new_y = cur[1]+direct[1]
+                                #判断是否是岛屿同时是否能够访问，是岛屿的话加入队列中
+                                if 0<=new_x<row and 0<=new_y<col and grid[new_x][new_y]=='1' and visited[(new_x,new_y)]:
+                                    queue.append((new_x,new_y))
+                                    visited[(new_x,new_y)]=False
+                    #
+                    count+=1
+        return  count
+
+```
 

@@ -89,6 +89,91 @@ $$
 
 - 引入了度矩阵，从而解决了没有考虑自身节点信息自传递的问题
 
+  为什么拉普拉斯矩阵要定义成$L=D-A$这种形式？
+
+
+
+ **2.3.1 Laplacian**
+
+在数学中，拉普拉斯算子（Laplacian）是由欧几里得空间中的一个函数的梯度的散度给出的微分算子，通常有以下几种写法：![[公式]](https://www.zhihu.com/equation?tex=%5CDelta+%2C%5Cnabla%5E2%2C%5Cnabla+%5Ccdot+%5Cnabla)。所以对于任意函数 ![[公式]](https://www.zhihu.com/equation?tex=f) 来说，其拉普拉斯算子的定义为：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5CDelta+f+%3D+%5Cnabla%5E2+f+%3D+%5Cnabla+%5Ccdot+%5Cnabla+f+%5C%5C+%5C%5C)
+
+这里引入了一个新的概念——散度，这里简单介绍下：
+
+散度（Divergence）是向量分析的一个向量算子，将向量空间上的向量场（矢量场）对应到一个标量场。散度描述的是向量场里一个点是汇聚点还是发源点。值为正时表示该点为发源点，值为负时表示该点为汇聚点，值为零时表示该点无源。散度在物理上的含义可以理解为磁场、热源等。
+
+回到正文，我们看下拉普拉斯算子在 n 维空间中的笛卡尔坐标系的数学定义：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5CDelta+f+%3D+%5Csum_%7Bi%3D1%7D%5En+%5Cfrac%7B%5Cpartial+%5E2+f%7D%7B%5Cpartial+x_i%5E2%7D+%5C%5C+%5C%5C)
+
+数学表示为各个维度的二阶偏导数之和。
+
+以一维空间为例：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5Cfrac%7B%5Cpartial+%5E2+f%7D%7B%5Cpartial+x_i%5E2%7D+%26%3D+f%5E%7B%27%27%7D%28x%29+%5C%5C+%26%5Capprox+f%5E%7B%27%7D%28x%29+-+f%5E%7B%27%7D%28x-1%29+%5C%5C+%26%5Capprox+f%28x%2B1%29+-+f%28x%29+-%28f%28x%29+-+f%28x-1%29%29+%5C%5C+%26%3D+f%28x%2B1%29+%2B+f%28x-1%29%29+-+2f%28x%29++%5Cend%7Baligned%7D+%5C%5C+%5C%5C)
+
+也就是说二阶导数近似于其二阶差分，可以理解为当前点对其在所有自由度上微扰之后获得的增益。这里自由度为 2，分别是 +1 和 -1 方向。
+
+再以二维空间为例子：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+%5CDelta+f%28x%2Cy%29+%26%3D+%5Cfrac%7B%5Cpartial+%5E2+f%7D%7B%5Cpartial+x%5E2%7D+%2B+%5Cfrac%7B%5Cpartial+%5E2+f%7D%7B%5Cpartial+y%5E2%7D++%5C%5C+%26%3D%5Bf%28x%2B1%2Cy%29+%2B+f%28x-1%2Cy%29%29+-+2f%28x%2Cy%29+%5D%2B%5Bf%28x%2Cy%2B1%29+%2B+f%28x%2Cy-1%29%29+-+2f%28x%2Cy%29%5D+%5C%5C+%26%3Df%28x%2B1%2Cy%29+%2B+f%28x-1%2Cy%29%29+%2B+f%28x%2Cy%2B1%29+%2B+f%28x%2Cy-1%29%29+-+4f%28x%2Cy%29++%5C%5C+%5Cend%7Baligned%7D+%5C%5C+%5C%5C)
+
+看到上面可能大家会很可能很陌生，但是这个就是图像中的拉普拉斯卷积核：
+
+![img](https://pic1.zhimg.com/v2-8ed1a50e431beefa73a59de4dc68acb8_b.jpg)
+
+此时共有 4 个自由度 (1,0),(-1,0),(0,1),(0,-1)，当然如果对角线后其自由度可以为 8。
+
+对此我们可以进行归纳：**「拉普拉斯算子是所有自由度上进行微小变化后所获得的增益」**。
+
+我们将其推广到网络图中，考虑有 N 个节点的网络图，其自由度最大为 N，那么函数 ![[公式]](https://www.zhihu.com/equation?tex=f) 可以是 N 维的向量，即：
+
+![[公式]](https://www.zhihu.com/equation?tex=f+%3D+%28f_1%2C...%2Cf_N%29+%5C%5C+%5C%5C)
+
+其中，![[公式]](https://www.zhihu.com/equation?tex=f_i) 表示函数 ![[公式]](https://www.zhihu.com/equation?tex=f) 在网络图中节点 i 处的函数值，类比 ![[公式]](https://www.zhihu.com/equation?tex=f%28x%2Cy%29) 为函数 ![[公式]](https://www.zhihu.com/equation?tex=f) 在 (x,y) 的函数值。
+
+在网络图中，两个节点的之间的增益为 ![[公式]](https://www.zhihu.com/equation?tex=f_i-f_j)，考虑加权图则有 ![[公式]](https://www.zhihu.com/equation?tex=w_%7Bij%7D%28f_i-f_j%29) ，那么对于节点 i 来说，总增益即为拉普拉斯算子在节点 i 的值：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+++%5CDelta+%5Cboldsymbol%7Bf%7D_i+%26%3D+%5Csum_%7Bj+%5Cin+N_i%7D+%5Cfrac%7B%5Cpartial+f_i%7D%7B%5Cpartial+j%5E2%7D+%5C%5C+++%26+%5Capprox++%5Csum_%7Bj%7D+w_%7Bij%7D+%28f_i+-+f_j%29+%5C%5C+%26%3D++%5Csum_%7Bj%7D+w_%7Bij%7D+%28f_i+-+f_j%29+%5C%5C+++%26%3D+%28%5Csum_%7Bj%7D+w_%7Bij%7D%29+f_i+-+%5Csum_j+w_%7Bij%7D+f_j+%5C%5C+++%26%3Dd_if_i+-+w_%7Bi%3A%7Df_i+%5C%5C+++%5Cend%7Baligned%7D+%5C%5C+%5C%5C)
+
+其中，![[公式]](https://www.zhihu.com/equation?tex=d_i%3D%5Csum_%7Bj%5Cin+N_i%7D+w_%7Bij%7D) 为节点 i 的度；上式第二行去掉了 ![[公式]](https://www.zhihu.com/equation?tex=j%5Cin+N_%7Bi%7D) 是因为 ![[公式]](https://www.zhihu.com/equation?tex=w_%7Bij%7D) 可以控制节点 i 的邻接矩阵。
+
+对于任意 ![[公式]](https://www.zhihu.com/equation?tex=i%5Cin+N) 都成立，所以我们有：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D++++%5CDelta+%7Bf%7D+%3D%5Cleft%28+%7B%5Cmatrix%7B+%7B%5CDelta+%7Bf_1%7D%7D++%5Ccr++++++%5Cvdots+++%5Ccr+++++%7B%5CDelta+%7Bf_N%7D%7D++%5Ccr++++%7D+%7D+%5Cright%29+%26+%3D+%5Cleft%28+%7B%5Cmatrix%7B++++%7B%7Bd_1%7D%7Bf_1%7D+-+%7Bw_%7B1%3A%7D%7Df%7D++%5Ccr++++++%5Cvdots+++%5Ccr+++++%7B%7Bd_N%7D%7Bf_N%7D+-+%7Bw_%7BN%3A%7D%7Df%7D++%5Ccr++++%7D+%7D+%5Cright%29++%5Ccr++++%26++%3D%5Cleft%28+%7B%5Cmatrix%7B++++%7B%7Bd_1%7D%7D+%26++%5Ccdots++%26+0++%5Ccr++++++%5Cvdots++%26++%5Cddots++%26++%5Cvdots+++%5Ccr+++++0+%26++%5Ccdots++%26+%7B%7Bd_N%7D%7D++%5Ccr++++%7D+%7D+%5Cright%29++f+-+%5Cleft%28+%7B%5Cmatrix%7B++++%7B%7Bw_%7B1%3A%7D%7D%7D++%5Ccr++++++%5Cvdots+++%5Ccr+++++%7B%7Bw_%7BN%3A%7D%7D%7D++%5Ccr++++%7D+%7D+%5Cright%29f++++%5Ccr++%26%3D+diag%28%7Bd_i%7D%29f+-+%5Cmathbf%7BW%7Df++%5Ccr+++++%26%3D+%28%5Cmathbf%7BD%7D+-%5Cmathbf%7BW%7D%29f++%5Ccr+++++%26%3D+%5Cmathbf%7BL%7D+f+%5Ccr+%5Cend%7Baligned%7D+%5C%5C)
+
+自此，我们便给出了图拉普拉斯矩阵的推导过程，这个公式的全称为：图拉普拉斯算子作用在由图节点信息构成的向量 ![[公式]](https://www.zhihu.com/equation?tex=f) 上得到的结果等于图拉普拉斯矩阵和向量 ![[公式]](https://www.zhihu.com/equation?tex=f) 的点积。拉普拉斯矩阵反映了当前节点对周围节点产生扰动时所产生的累积增益，直观上也可以理解为某一节点的权值变为其相邻节点权值的期望影响，形象一点就是拉普拉斯矩阵可以刻画局部的平滑度。
+
+** Laplace Spectral decomposition**
+
+拉普拉斯矩阵的谱分解就是矩阵的特征分解：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BLu_k%7D+%3D+%5Clambda_k+%5Cmathbf%7B+u_k%7D%5C%5C+%5C%5C)
+
+对于无向图来说，拉普拉斯矩阵是实对称矩阵，而实对称矩阵一定可以用正交矩阵进行正交相似对角化：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BL%7D%3D%5Cmathbf%7BU%7D+%5Cmathbf%7B%5CLambda%7D+%5Cmathbf%7BU%7D%5E%7B-1%7D+%5C%5C+%5C%5C)
+
+其中，![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7B%5CLambda%7D) 为特征值构成**「对角矩阵」**，![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BU%7D) 为特征向量构成的**「正交矩阵」**。
+
+又因为正交矩阵的逆等于正交矩阵的转置：![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BU%7D%5E%7B-1%7D+%3D+%5Cmathbf%7BU%7D%5E%7BT%7D) ，所以我们有：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BL%7D%3D%5Cmathbf%7BU%7D+%5Cmathbf%7B%5CLambda%7D+%5Cmathbf%7BU%7D%5E%7B-1%7D+%3D%5Cmathbf%7BU%7D+%5Cmathbf%7B%5CLambda%7D+%5Cmathbf%7BU%7D%5E%7BT%7D+%5C%5C+%5C%5C)
+
+因为 L 是半正定矩阵，我们还可以有：
+
+![[公式]](https://www.zhihu.com/equation?tex=%5Cbegin%7Baligned%7D+f%5ET+%5Cmathbf%7BL%7D+f++%26%3D+f%5ETDf+-+f%5ETWf++%5C%5C+%26%3D%5Csum_id_if_i%5E2+-+%5Csum_%7Bi%2Cj%7D+f_i+f_j+w_%7Bij%7D+++%5C%5C+%26%3D%5Cfrac%7B1%7D%7B2%7D%5Cbig%28%5Csum_i+d_i+f_i%5E2-2%5Csum_%7Bij%7Df_i+f_j+w_%7Bij%7D+%2B+%5Csum_id_i+f_i%5E2+++%5Cbig%29+%5C%5C+%26%3D+%5Cfrac%7B1%7D%7B2%7D%5Csum_%7Bi%2Cj%7D+w_%7Bij%7D+%28f_i+-+f_j%29%5E2+%5C%5C+%5Cend%7Baligned%7D++%5C%5C+%5C%5C)
+
+其中，![[公式]](https://www.zhihu.com/equation?tex=f_i) 为节点 i 的信号。我们称 ![[公式]](https://www.zhihu.com/equation?tex=f%5ET+%5Cmathbf%7BL%7D+f+) 为图信号的总变差（Total Variation），可以刻画图信号整体的平滑度。
+
+拉普拉斯的谱分解具有以下几点性质：
+
+- 由于拉普拉斯矩阵以每行（列）元素之和为零，因此拉普拉斯矩阵的至少有一个特征值为 0，对应的特征向量 ![[公式]](https://www.zhihu.com/equation?tex=u_0+%3D+%5B1%EF%BC%8C1%EF%BC%8C%EF%BC%8C%E3%80%82+%E3%80%82+%E3%80%82+1%5D%5ET+%2F+%5Csqrt%7BN%7D)，且满足：![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BL%7D+u_0+%3D+0+u_0)。
+- 拉普拉斯矩阵的特征值都大于等于零，归一化的拉普拉斯矩阵的特征值区间为 [0, 2]；
+- 如果有 n 个特征值为 0，则表示图有 n 个子图相互无连接；
+- 特征值的总和为矩阵的迹，对于归一化的拉普拉斯矩阵，如果没有孤立节点或子图，其特征值为 N
+
 ### 实现三
 
 ![[公式]](https://www.zhihu.com/equation?tex=H%5E%7Bl%2B1%7D+%3D+%5Csigma+%28D%5E+%7B-%5Cfrac%7B1%7D%7B2%7D%7D%5Chat%7BA%7DD%5E+%7B-%5Cfrac%7B1%7D%7B2%7D%7DH%5E%7Bl%7DW%5E%7Bl%7D%29)

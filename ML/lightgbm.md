@@ -16,7 +16,7 @@ GBDT缺点：**对于每一个特征的每一个分裂点，都需要遍历全�
 
 #### GOSS
 
-![](/home/ethan/Desktop/Basic-Algorithm/image/lightgbm1.png)
+<img src="/Users/eason/Library/Application%20Support/typora-user-images/image-20210202152705917.png" alt="image-20210202152705917" style="zoom:50%;" />
 
 goss对应的是上图中的算法２,其中a表示对大梯度样本的采样率，b是对小梯度样本的采样率.首先按照一阶梯度(实际上是按照一阶梯度以及二阶梯度的乘积)对样本进行排序,然后取前topN作为大梯度样本集合topSet（topN的个数是通过a确定的）,然后在剩下的里面随机抽取（RandomPick为随机抽取算法）randN个作为小梯度样本集合randSet,最后将两者合并作为采用后的样本usedSet，我们就拿这个样本取训练，同时呢为了尽可能不改变数据集的概率分布（因为这样抽的结果就是小梯度的样本被不断的减少再减少），所以还有给小样本一个补偿，那就是小梯度样本的一阶梯度以及二阶梯度乘以一个常数即（1-a）/b，可以看到当a=0时就变成了随机采用啦，这样抽的结果还是能保持准确率的，这里有详细的数学证明，请看论文的3.2部分。
 
@@ -85,7 +85,7 @@ goss对应的是上图中的算法２,其中a表示对大梯度样本的采样�
 
 #### EFB
 
-![](../image/lightgbm2.png)
+![image-20210202152746259](/Users/eason/Library/Application%20Support/typora-user-images/image-20210202152746259.png)
 
 伪代码如下:
 
