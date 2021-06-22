@@ -3,12 +3,12 @@
 - 传统词表示方法无法很好的处理未知或罕见的词汇
 - 传统词tokenization方法不利于模型学到词缀之间的关系
   - E.g 模型学到的old，older,and,oldest之间的关系无法泛化到smart,smater,smartest
-- character embedding 作为OOV的解决方法粒度太细了
+- character embedding 作为OOV的解决方法粒度太细了，同时比较适用于一些具备形态学特征的语言
 - subword粒度在词与字符之间，能够较好的平衡OOV问题
 
 
 
-### Byte Pair Encodinga
+### Byte Pair Encoding
 
 BPE(字节对)编码在GPT-2以及RoBerta中都使用到了，具体步骤如下
 

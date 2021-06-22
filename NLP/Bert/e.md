@@ -43,3 +43,4 @@ Transformer-XL通过 segent-level recurrence mechanism 和 releative position-em
 ![[公式]](https://www.zhihu.com/equation?tex=%5Cmathbf%7BA%7D_%7Bi%2C+j%7D%5E%7B%5Cmathrm%7Brel%7D%7D%3D%5Cunderbrace%7B%5Cmathbf%7BE%7D_%7Bx_%7Bi%7D%7D%5E%7B%5Ctop%7D+%5Cmathbf%7BW%7D_%7Bq%7D%5E%7B%5Ctop%7D+%5Cmathbf%7BW%7D_%7Bk%2C+E%7D+%5Cmathbf%7BE%7D_%7Bx_%7Bj%7D%7D%7D_%7B%28a%29%7D%2B%5Cunderbrace%7B%5Cmathbf%7BE%7D_%7Bx_%7Bi%7D%7D%5E%7B%5Ctop%7D+%5Cmathbf%7BW%7D_%7Bq%7D%5E%7B%5Ctop%7D+%5Cmathbf%7BW%7D_%7Bk%2C+R%7D+%5Cmathbf%7BR%7D_%7Bi-j%7D%7D_%7B%28b%29%7D%2B%5Cunderbrace%7Bu%5E%7B%5Ctop%7D+%5Cmathbf%7BW%7D_%7Bk%2C+E%7D+%5Cmathbf%7BE%7D_%7Bx_%7Bj%7D%7D%7D_%7B%28c%29%7D%2B%5Cunderbrace%7Bv%5E%7B%5Ctop%7D+%5Cmathbf%7BW%7D_%7Bk%2C+R%7D+%5Cmathbf%7BR%7D_%7Bi-j%7D%7D_%7B%28d%29%7D%5C%5C)
 
 同时，position-embedding的信息也不是和word-embedding相加送到neural network中了，而是在计算attention的时候进行编码位置信息。
+
